@@ -1,0 +1,255 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Write your model definitions here
+ */
+
+namespace model
+
+/**
+* Gender Ennumaration
+ */
+enum genderType {
+  o MALE
+  o FEMALE
+}
+
+/**
+* Address Concept
+ */
+
+ concept Address {
+  o String addressLine
+  o String city optional
+  o String state optional
+  o String zipCode optional
+  o String country optional
+}
+/**
+* Our Participants
+ */
+participant  Pharmacy identified by pharmacyId {
+  o String pharmacyId
+  o String name
+  o Address address
+  o String Emprunt
+  o String phoneNumber
+}
+participant Practitioner identified by pratitionerId {
+  o String pratitionerId
+  o String firstName
+  o String lastName
+  o String email
+  o String cin
+  o String Emprunt
+  o Address address
+  o String phoneNumber
+  o String speciality
+  --> Prescription[] prescriptions optional
+}
+participant Patient identified by patientId {
+  o String patientId
+  o String firstName
+  o String lastName
+  o String photo
+  o String Emprunt
+  o genderType gender
+  o DateTime dateOfBirth
+  o String cin
+  o Address address
+  o String phone
+  o String emergencyPhone
+  o String email
+  o String occupation
+  o String bloodType
+  o String username
+  o String password
+  o Double height
+  o Double weight
+  o Drug[] pharmacyDrugs optional
+  o Drug[] practitionerDrugs optional
+  o PhysicalActivity[] physicalActivity optional
+  o Nutrition[] nutrition optional
+  o MriResults[] mriResults optional
+  o Allergies[] allergies optional
+  o LabTestResults[] labTestResults optional
+  o ChronicDiseases[] chronicDiseases optional
+  o Prescription[] prescriptions optional
+  o Consultation[] consultations optional
+}
+
+
+
+transaction SampleTransaction {
+  --> Patient patient
+  --> Practitioner practitioner
+}
+
+transaction PharmacyAddDrug {
+  o Drug drug
+  --> Patient patient
+  --> Pharmacy pharmacy
+}
+transaction PharmacyAddDrugFromPrescription {
+  --> Patient patient
+  o String prescriptionId
+}
+
+transaction addDrugToPrescription {
+  --> Prescription prescription
+  o Drug drug
+}
+
+transaction PractitionerAddDrug {
+  o Drug drug
+  --> Patient patient
+  --> Practitioner practitioner
+}
+transaction PractitionerAddConsultation {
+  o Consultation consultation
+  --> Patient patient
+  --> Practitioner practitioner
+}
+transaction PractitionerAddAllergie {
+  o Allergies allergie
+  --> Patient patient
+  --> Practitioner practitioner
+}
+transaction PractitionerAddMri {
+  o MriResults mri
+  --> Patient patient
+  --> Practitioner practitioner
+}
+transaction PractitionerAddLabRes {
+  o LabTestResults labTestResults
+  --> Patient patient
+  --> Practitioner practitioner
+}
+transaction PractitionerAddChronicDisease {
+  o ChronicDiseases chronicDisease
+  --> Patient patient
+  --> Practitioner practitioner
+}
+
+transaction PatientAddNutrition {
+  o Nutrition nutrition
+  --> Patient patient
+}
+transaction PatientAddPhysicalActivity {
+  o PhysicalActivity physicalActivity
+  --> Patient patient
+}
+/**
+* Our Events
+ */
+event PrescriptionFinished {
+  --> Patient patient
+  o Prescription[] oldPrescriptions
+  o Prescription[] newPrescriptions
+
+}
+
+event PharmacyAddDrugFinished {
+  o String details
+}
+event PractitionerAddDrugFinished {
+  o String details
+}
+event PractitionerAddConsultationFinished {
+  o String details
+}
+event PractitionerAddAllergieFinished {
+  o String details
+}
+event PractitionerAddMriFinished {
+  o String details
+}
+event PractitionerAddLabResFinished {
+  o String details
+}
+event PractitionerAddChronicDiseaseFinished {
+  o String details
+}
+
+/**
+* Our Assets
+ */
+asset PhysicalActivity identified by physicalId {
+  o String physicalId
+  o String type
+  o String duration
+}
+
+asset Nutrition identified by nutritionId {
+  o String nutritionId
+  o String name
+  o String type
+  o Integer quantity
+}
+asset Drug identified by drugId {
+  o String drugId
+  o String name
+  o String manufacturer
+  o Double price
+  o String lotNumber
+}
+
+asset MriResults identified by mriId {
+  o String mriId
+  o String establishment
+  o String reference
+  o DateTime testDate
+}
+
+asset Allergies identified by allergyId {
+  o String allergyId
+  o String name
+  --> Practitioner practitioner
+  o String treatmentBrief
+}
+
+asset LabTestResults identified by labTestResultId {
+  o String labTestResultId
+  o String establishment
+  o DateTime testDate
+  o String reference
+  --> Practitioner[] pratitioners optional
+}
+
+asset ChronicDiseases identified by chronicDiseasesId {
+  o String chronicDiseasesId
+  o String name
+}
+
+asset Prescription identified by prescriptionId {
+  o String prescriptionId
+  o DateTime prescriptionDate
+  --> Drug[] drugs optional
+}
+
+asset Consultation identified by consultationId {
+  o String consultationId
+  o DateTime consultionDate
+  --> Practitioner practitioner
+}
+
+asset PharmacyDrugs identified by pharmacyDrugid {
+  o String pharmacyDrugid
+}
+asset PractitionerDrugs identified by practitionerDrugs {
+  o String practitionerDrugs
+}
+ 
+
