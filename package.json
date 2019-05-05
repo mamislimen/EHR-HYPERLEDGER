@@ -1,13 +1,13 @@
 {
-    "name": "blockchainbean",
+    "name": "myehr",
     "version": "1.0.0",
     "description": "demo",
-    "author": "Horea Porutiu",
+    "author": "Mami Slimen",
     "license": "Apache-2.0",
     "keywords": [
         "Hyperledger",
         "Fabric",
-        "Car",
+        "myehr",
         "Sample",
         "Application"
     ]
